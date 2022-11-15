@@ -259,4 +259,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Certificate Files
 ./backend/certificate.*
+./backend/certificate/
+./backend/certificate
