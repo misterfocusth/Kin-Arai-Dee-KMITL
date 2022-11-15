@@ -44,9 +44,10 @@ Kin Arai Dee - วันนี้กินอะไรดี (Nearby KMITL) proj
 
 **Client:** NextJS, TailwindCSS, LINE LIFF (Front-end framework)
 
-**Server:** Python, Flask, LINE Messaging API, Heroku
+**Server:** Python, Flask, LINE Messaging API, Heroku or Azure Serverless Function
 
-**Database:** MySQL
+**Database:** MySQL (Azure Database for MySQL Server)
+
 ## Feedback - เเจ้งปัญหาข้อเสนอเเนะ
 
 เเจ้งปัญหาการใช้งานหรือข้อเสนอเเนะเพิ่มเติม ได้ที่ : 65070219@KMITL.AC.TH
