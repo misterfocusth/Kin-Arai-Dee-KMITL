@@ -40,7 +40,8 @@ jobs:
             . 
             !venv/
 
-      - script: python ./backend/main.py
+      - name: Start python
+        run: python ./backend/main.py
 
   deploy:
     runs-on: ubuntu-latest
