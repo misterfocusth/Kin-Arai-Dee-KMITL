@@ -35,9 +35,10 @@ class Restaurant(db.Model):
     location = db.Column(db.String(255), nullable=False)
     phone_number = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
-        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category})"
+        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category}, image_url={self.image_url})"
 
 
 class Menu_Review(db.Model):
