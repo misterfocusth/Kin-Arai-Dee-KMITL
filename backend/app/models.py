@@ -17,7 +17,6 @@ class User(db.Model):
 
 
 class Restaurant_Review(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.Integer, nullable=False)
     review_by = db.Column(db.Integer, nullable=False)
@@ -45,7 +44,7 @@ class Restaurant(db.Model):
 class Menu_Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     menu_id = db.Column(db.Integer, nullable=False)
-    review_by = db.Column(db.String(255), nullable=False)
+    review_by = db.Column(db.Integer, nullable=False)
     review_content = db.Column(db.String(255), nullable=False)
     review_rating = db.Column(db.Integer, nullable=False)
     review_date = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -58,11 +57,12 @@ class Menu_Review(db.Model):
 class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(255), nullable=False)
     restaurant_name = db.Column(db.String(255), nullable=False)
     restaurant_location = db.Column(db.String(255), nullable=False)
-    image_url = db.Column(db.Boolean, default=False)
+    image_url = db.Column(db.String(255))
+    restaurant_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"Menu(name={self.name}, price={self.price}, category={self.category}, restaurant_name={self.restaurant_name}, restaurant_location={self.restaurant_location}, image_url={self.image_url})"
+        return f"Menu(name={self.name}, price={self.price}, category={self.category}, restaurant_name={self.restaurant_name}, restaurant_location={self.restaurant_location}, image_url={self.image_url}, restaurant_id={self.restaurant_id})"

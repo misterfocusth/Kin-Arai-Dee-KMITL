@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from .models import db
 from .routes.userRoute import UserRoute
 from .routes.restaurantRoute import RestaurantRoute, RestaurantReviewRoute
+from .routes.menuRoute import MenuRoute, MenuReviewRoute
 import os
 load_dotenv()
 
@@ -31,5 +32,9 @@ def create_app():
         RestaurantRoute, "/apis/restaurant/<int:req_id>", "/apis/restaurant/")
     api.add_resource(
         RestaurantReviewRoute, "/apis/restaurant/review/<int:req_id>", "/apis/restaurant/review/")
+    api.add_resource(
+        MenuRoute, "/apis/menu/<int:req_id>", "/apis/menu/")
+    api.add_resource(
+        MenuReviewRoute, "/apis/menu/review/<int:req_id>", "/apis/menu/review/")
     create_database(app)
     return app
