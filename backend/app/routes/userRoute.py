@@ -41,7 +41,7 @@ class UserRoute(Resource):
         if req_id == None:
             users = User.query.all()
             return users
-        user = User.query.filter_by(req_id=id).first()
+        user = User.query.filter_by(id=req_id).first()
         if not user:
             abort(
                 404, message="Error: This user with specified user_id not exists in our database.")
@@ -82,6 +82,5 @@ class UserRoute(Resource):
             user.is_accepted_terms = args["is_accepted_terms"]
         if args["is_accepted_pdpa"]:
             user.is_accepted_pdpa = args["is_accepted_pdpa"]
-        db.session.add(user)
         db.session.commit()
         return user, 201

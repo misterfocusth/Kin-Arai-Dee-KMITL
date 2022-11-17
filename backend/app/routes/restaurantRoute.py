@@ -14,7 +14,7 @@ restaurant_resource_field = {
 restaurant_review_resource_field = {
     "id": fields.Integer,
     "restaurant_id": fields.Integer,
-    "review_by": fields.String,
+    "review_by": fields.Integer,
     "review_content": fields.String,
     "review_rating": fields.Integer,
     "review_date": fields.DateTime,
@@ -48,13 +48,13 @@ restaurant_update_args.add_argument("image_url", type=str,
 restaurant_review_add_args = reqparse.RequestParser()
 restaurant_review_add_args.add_argument("restaurant_id", type=int, required=True,
                                         help="[Request Parser]: Args: restaurant_id < Must be integer or not empty.")
-restaurant_review_add_args.add_argument("review_by", type=str, required=True,
+restaurant_review_add_args.add_argument("review_by", type=int, required=True,
                                         help="[Request Parser]: Args: review_by < Must be string or not empty.")
 restaurant_review_add_args.add_argument("review_content", type=str, required=True,
                                         help="[Request Parser]: Args: review_content < Must be string or not empty.")
 restaurant_review_add_args.add_argument("review_rating", type=int, required=True,
                                         help="[Request Parser]: Args: review_rating < Must be integer or not empty.")
-restaurant_review_add_args.add_argument("review_date", type=datetime, required=True,
+restaurant_review_add_args.add_argument("review_date", type=datetime,
                                         help="[Request Parser]: Args: review_date < Must be datetime or not empty.")
 restaurant_review_add_args.add_argument("is_deleted", type=bool, required=True,
                                         help="[Request Parser]: Args: is_deleted < Must be boolean or not empty.")
@@ -62,7 +62,7 @@ restaurant_review_add_args.add_argument("is_deleted", type=bool, required=True,
 restaurant_review_update_args = reqparse.RequestParser()
 restaurant_review_update_args.add_argument("restaurant_id", type=int,
                                            help="[Request Parser]: Args: restaurant_id < Must be integer.")
-restaurant_review_update_args.add_argument("review_by", type=str,
+restaurant_review_update_args.add_argument("review_by", type=int,
                                            help="[Request Parser]: Args: review_by < Must be string.")
 restaurant_review_update_args.add_argument("review_content", type=str,
                                            help="[Request Parser]: Args: review_content < Must be string.")
@@ -122,6 +122,74 @@ class RestaurantRoute(Resource):
             restaurant.category = args["category"]
         if args["image_url"]:
             restaurant.image_url = args["image_url"]
-        db.session.add(restaurant)
         db.session.commit()
         return restaurant, 201
+
+
+class RestaurantReviewRoute(Resource):
+    @marshal_with(restaurant_review_resource_field)
+    def get(self, req_id=None):
+        if req_id == None:
+            restaurant_reviews = Restaurant_Review.query.all()
+            return restaurant_reviews
+        restaurant_review = Restaurant_Review.query.filter_by(
+            id=req_id).first()
+        if not restaurant_review:
+            abort(
+                404, message="Error: This restaurant review specified review_id not exists in our database.")
+        return restaurant_review
+
+    @marshal_with(restaurant_review_resource_field)
+    def post(self):
+        args = restaurant_review_add_args.parse_args()
+        id, by = args["restaurant_id"], args["review_by"]
+        restaurant_review = Restaurant_Review.query.filter_by(
+            restaurant_id=id, review_by=by).first()
+        if restaurant_review:
+            abort(409, message="Error: This user already review for this restaurant.")
+        restaurant_review = Restaurant_Review(
+            restaurant_id=args["restaurant_id"],
+            review_by=args["review_by"],
+            review_content=args["review_content"],
+            review_rating=args["review_rating"],
+            is_deleted=args["is_deleted"],
+        )
+        db.session.add(restaurant_review)
+        db.session.commit()
+        return restaurant_review, 201
+
+    @marshal_with(restaurant_review_resource_field)
+    def patch(self, req_id):
+        args = restaurant_review_update_args.parse_args()
+        restaurant_review = Restaurant_Review.query.filter_by(
+            id=req_id).first()
+        if not restaurant_review:
+            abort(
+                404, message="Error: This restaurant review specified review_id not exists in our database.")
+        if args["restaurant_id"]:
+            restaurant_review.restaurant_id = args["restaurant_id"]
+        if args["review_by"]:
+            restaurant_review.review_by = args["review_by"]
+        if args["review_content"]:
+            restaurant_review.review_content = args["review_content"]
+        if args["review_rating"]:
+            restaurant_review.review_rating = args["review_rating"]
+        if args["is_deleted"]:
+            restaurant_review.is_deleted = args["is_deleted"]
+        db.session.commit()
+        return restaurant_review, 201
+
+    @marshal_with(restaurant_review_resource_field)
+    def delete(self, req_id=None):
+        if req_id == None:
+            abort(
+                409, message="Error: restaurant_review_id are required in order to delete review.")
+        restaurant_review = Restaurant_Review.query.filter_by(
+            id=req_id).first()
+        if not restaurant_review:
+            abort(
+                404, message="Error: This restaurant review specified review_id not exists in our database.")
+        restaurant_review = Restaurant_Review.query.filter_by(
+            id=req_id).delete()
+        db.session.commit()
+        return restaurant_review, 201

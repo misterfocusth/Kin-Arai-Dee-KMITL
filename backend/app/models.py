@@ -17,9 +17,10 @@ class User(db.Model):
 
 
 class Restaurant_Review(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
-    restaurant_id = db.Column(db.Integer)
-    review_by = db.Column(db.String(255), nullable=False)
+    restaurant_id = db.Column(db.Integer, nullable=False)
+    review_by = db.Column(db.Integer, nullable=False)
     review_content = db.Column(db.String(255), nullable=False)
     review_rating = db.Column(db.Integer, nullable=False)
     review_date = db.Column(db.DateTime(timezone=True), default=func.now())

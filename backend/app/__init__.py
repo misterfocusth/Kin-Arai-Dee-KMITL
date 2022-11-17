@@ -4,7 +4,7 @@ from flask_restful import Api
 from dotenv import load_dotenv
 from .models import db
 from .routes.userRoute import UserRoute
-from .routes.restaurantRoute import RestaurantRoute
+from .routes.restaurantRoute import RestaurantRoute, RestaurantReviewRoute
 import os
 load_dotenv()
 
@@ -29,5 +29,7 @@ def create_app():
     api.add_resource(UserRoute, "/apis/user/<int:req_id>", "/apis/user/")
     api.add_resource(
         RestaurantRoute, "/apis/restaurant/<int:req_id>", "/apis/restaurant/")
+    api.add_resource(
+        RestaurantReviewRoute, "/apis/restaurant/review/<int:req_id>", "/apis/restaurant/review/")
     create_database(app)
     return app
