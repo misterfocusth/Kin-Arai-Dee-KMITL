@@ -20,18 +20,18 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
-        
+        run: pip install -r ./backend/requirements.txt
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
@@ -40,11 +40,13 @@ jobs:
             . 
             !venv/
 
+      - script: python ./backend/main.py
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -53,11 +55,11 @@ jobs:
         with:
           name: python-app
           path: .
-          
-      - name: 'Deploy to Azure Web App'
+
+      - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'kin-arai-dee-apis-dev'
-          slot-name: 'Production'
+          app-name: "kin-arai-dee-apis-dev"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BE070E46900343C3827BCDDEF46280AE }}
