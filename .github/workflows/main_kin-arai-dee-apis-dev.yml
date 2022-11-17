@@ -3,7 +3,8 @@
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 env:
   PYTHON_VERSION: "3.9"
-  STARTUP_COMMAND: "python3 ./backend/main.py"
+  WORKING_DIRECTORY: "../../backend"
+  STARTUP_COMMAND: "python3 main.py"
 
 name: Build and deploy Python app to Azure Web App - kin-arai-dee-apis-dev
 
@@ -47,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "Production"
+      name: "Backend (API) - Env: Development"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
