@@ -1,4 +1,4 @@
-from ..models import db, Menu, Menu_Review
+from ..models import db, Menu, MenuReview
 from flask_restful import Resource, abort, reqparse, marshal_with, fields
 import datetime
 
@@ -11,6 +11,7 @@ menu_resource_field = {
     "restaurant_id": fields.Integer,
     "restaurant_location": fields.String,
     "image_url": fields.String,
+    "is_deleted": fields.Boolean,
 }
 
 menu_review_resource_field = {
@@ -54,6 +55,8 @@ menu_update_args.add_argument("image_url", type=str,
                               help="[Request Parser]: Args: image_url < Must be string.")
 menu_update_args.add_argument("restaurant_id", type=int,
                               help="[Request Parser]: Args: restaurant_id < Must be integer.")
+menu_update_args.add_argument("is_deleted", type=bool,
+                              help="[Request Parser]: Args: is_deleted < Must be integer.")
 
 menu_review_add_args = reqparse.RequestParser()
 menu_review_add_args.add_argument("menu_id", type=int, required=True,
@@ -90,6 +93,7 @@ class MenuRoute(Resource):
         if not menu:
             abort(
                 404, message="Error: This menu with specified restaurant_id not exists in our database.")
+        db.session.close()
         return menu
 
     @marshal_with(menu_resource_field)
@@ -112,6 +116,7 @@ class MenuRoute(Resource):
         )
         db.session.add(menu)
         db.session.commit()
+        db.session.close()
         return menu, 201
 
     @marshal_with(menu_resource_field)
@@ -134,6 +139,7 @@ class MenuRoute(Resource):
         if args["image_url"]:
             menu.image_url = args["image_url"]
         db.session.commit()
+        db.session.close()
         return menu, 201
 
 
@@ -141,9 +147,9 @@ class MenuReviewRoute(Resource):
     @marshal_with(menu_review_resource_field)
     def get(self, req_id=None):
         if req_id == None:
-            menu_reviews = Menu_Review.query.all()
+            menu_reviews = MenuReview.query.all()
             return menu_reviews
-        menu_review = Menu_Review.query.filter_by(id=req_id).first()
+        menu_review = MenuReview.query.filter_by(id=req_id).first()
         if not menu_review:
             abort(
                 404, message="Error: This menu review with specified menu_review_id not exists in our database.")
@@ -153,12 +159,12 @@ class MenuReviewRoute(Resource):
     def post(self):
         args = menu_review_add_args.parse_args()
         id, by = args["menu_id"], args["review_by"]
-        menu_review = Menu_Review.query.filter_by(
+        menu_review = MenuReview.query.filter_by(
             menu_id=id, review_by=by).first()
         if menu_review:
             abort(
                 409, message="Error: This user already review for this menu.")
-        menu_review = Menu_Review(
+        menu_review = MenuReview(
             menu_id=args["menu_id"],
             review_by=args["review_by"],
             review_content=args["review_content"],
@@ -167,12 +173,13 @@ class MenuReviewRoute(Resource):
         )
         db.session.add(menu_review)
         db.session.commit()
+        db.session.close()
         return menu_review, 201
 
     @marshal_with(menu_review_resource_field)
     def patch(self, req_id):
         args = menu_review_update_args.parse_args()
-        menu_review = Menu_Review.query.filter_by(id=req_id).first()
+        menu_review = MenuReview.query.filter_by(id=req_id).first()
         if not menu_review:
             abort(
                 404, message="Error: This menu review with specified menu_review_id not exists in our database.")
@@ -187,6 +194,7 @@ class MenuReviewRoute(Resource):
         if args["is_deleted"]:
             menu_review.is_deleted = args["is_deleted"]
         db.session.commit()
+        db.session.close()
         return menu_review, 201
 
     @marshal_with(menu_review_resource_field)
@@ -194,12 +202,12 @@ class MenuReviewRoute(Resource):
         if req_id == None:
             abort(
                 409, message="Error: menu_review_id are required in order to delete review.")
-        menu_review = Menu_Review.query.filter_by(
+        menu_review = MenuReview.query.filter_by(
             id=req_id).first()
         if not menu_review:
             abort(
                 404, message="Error: This menu review with specified review_id not exists in our database.")
-        menu_review = Menu_Review.query.filter_by(
-            id=req_id).delete()
+        menu_review.is_deleted = True
         db.session.commit()
+        db.session.close()
         return menu_review, 201

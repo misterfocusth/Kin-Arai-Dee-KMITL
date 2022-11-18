@@ -1,17 +1,18 @@
 """Init Flask & Database Connection"""
 from flask import Flask
 from flask_restful import Api
-from dotenv import load_dotenv
 from .models import db
-from .routes.userRoute import UserRoute
+from .routes.userRoute import UserRoute, LiffRoute
 from .routes.restaurantRoute import RestaurantRoute, RestaurantReviewRoute
 from .routes.menuRoute import MenuRoute, MenuReviewRoute
 import os
+
+from dotenv import load_dotenv
 load_dotenv()
 
-db_host = os.getenv("SQL_DATABASE_HOST")
-db_username = os.getenv("SQL_DATABASE_USERNAME")
-db_password = os.getenv("SQL_DATABASE_PASSWORD")
+db_host = os.environ['SQL_DATABASE_HOST']
+db_username = os.environ['SQL_DATABASE_USERNAME']
+db_password = os.environ['SQL_DATABASE_PASSWORD']
 SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s:3306/test" % (
     db_username, db_password, db_host)
 
@@ -28,6 +29,8 @@ def create_app():
     db.init_app(app)
     api = Api(app)
     api.add_resource(UserRoute, "/apis/user/<int:req_id>", "/apis/user/")
+    api.add_resource(
+        LiffRoute, "/apis/user/<int:req_user_id>")
     api.add_resource(
         RestaurantRoute, "/apis/restaurant/<int:req_id>", "/apis/restaurant/")
     api.add_resource(

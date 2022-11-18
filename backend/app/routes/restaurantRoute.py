@@ -1,4 +1,4 @@
-from ..models import db, Restaurant, Restaurant_Review
+from ..models import db, Restaurant, RestaurantReview
 from flask_restful import Resource, abort, reqparse, marshal_with, fields
 import datetime
 
@@ -8,7 +8,8 @@ restaurant_resource_field = {
     "location": fields.String,
     "phone_number": fields.String,
     "category": fields.String,
-    "image_url": fields.String
+    "image_url": fields.String,
+    "is_deleted": fields.Boolean
 }
 
 restaurant_review_resource_field = {
@@ -44,6 +45,8 @@ restaurant_update_args.add_argument("category", type=str,
                                     help="[Request Parser]: Args: category < Must be string.")
 restaurant_update_args.add_argument("image_url", type=str,
                                     help="[Request Parser]: Args: image_url < Must be string.")
+restaurant_update_args.add_argument("is_deleted", type=bool,
+                                    help="[Request Parser]: Args: is_deleted < Must be boolean.")
 
 restaurant_review_add_args = reqparse.RequestParser()
 restaurant_review_add_args.add_argument("restaurant_id", type=int, required=True,
@@ -84,6 +87,7 @@ class RestaurantRoute(Resource):
         if not restaurant:
             abort(
                 404, message="Error: This restaurant with specified restaurant_id not exists in our database.")
+        db.session.close()
         return restaurant
 
     @marshal_with(restaurant_resource_field)
@@ -103,6 +107,7 @@ class RestaurantRoute(Resource):
         )
         db.session.add(restaurant)
         db.session.commit()
+        db.session.close()
         return restaurant, 201
 
     @marshal_with(restaurant_resource_field)
@@ -123,6 +128,7 @@ class RestaurantRoute(Resource):
         if args["image_url"]:
             restaurant.image_url = args["image_url"]
         db.session.commit()
+        db.session.close()
         return restaurant, 201
 
 
@@ -130,24 +136,25 @@ class RestaurantReviewRoute(Resource):
     @marshal_with(restaurant_review_resource_field)
     def get(self, req_id=None):
         if req_id == None:
-            restaurant_reviews = Restaurant_Review.query.all()
+            restaurant_reviews = RestaurantReview.query.all()
             return restaurant_reviews
-        restaurant_review = Restaurant_Review.query.filter_by(
+        restaurant_review = RestaurantReview.query.filter_by(
             id=req_id).first()
         if not restaurant_review:
             abort(
                 404, message="Error: This restaurant review specified review_id not exists in our database.")
+        db.session.close()
         return restaurant_review
 
     @marshal_with(restaurant_review_resource_field)
     def post(self):
         args = restaurant_review_add_args.parse_args()
         id, by = args["restaurant_id"], args["review_by"]
-        restaurant_review = Restaurant_Review.query.filter_by(
+        restaurant_review = RestaurantReview.query.filter_by(
             restaurant_id=id, review_by=by).first()
         if restaurant_review:
             abort(409, message="Error: This user already review for this restaurant.")
-        restaurant_review = Restaurant_Review(
+        restaurant_review = RestaurantReview(
             restaurant_id=args["restaurant_id"],
             review_by=args["review_by"],
             review_content=args["review_content"],
@@ -156,12 +163,13 @@ class RestaurantReviewRoute(Resource):
         )
         db.session.add(restaurant_review)
         db.session.commit()
+        db.session.close()
         return restaurant_review, 201
 
     @marshal_with(restaurant_review_resource_field)
     def patch(self, req_id):
         args = restaurant_review_update_args.parse_args()
-        restaurant_review = Restaurant_Review.query.filter_by(
+        restaurant_review = RestaurantReview.query.filter_by(
             id=req_id).first()
         if not restaurant_review:
             abort(
@@ -177,6 +185,7 @@ class RestaurantReviewRoute(Resource):
         if args["is_deleted"]:
             restaurant_review.is_deleted = args["is_deleted"]
         db.session.commit()
+        db.session.close()
         return restaurant_review, 201
 
     @marshal_with(restaurant_review_resource_field)
@@ -184,12 +193,13 @@ class RestaurantReviewRoute(Resource):
         if req_id == None:
             abort(
                 409, message="Error: restaurant_review_id are required in order to delete review.")
-        restaurant_review = Restaurant_Review.query.filter_by(
+        restaurant_review = RestaurantReview.query.filter_by(
             id=req_id).first()
         if not restaurant_review:
             abort(
                 404, message="Error: This restaurant review specified review_id not exists in our database.")
-        restaurant_review = Restaurant_Review.query.filter_by(
+        restaurant_review = RestaurantReview.query.filter_by(
             id=req_id).delete()
         db.session.commit()
+        db.session.close()
         return restaurant_review, 201

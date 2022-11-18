@@ -7,7 +7,8 @@ resource_field = {
     "profile_picture_url": fields.String,
     "display_name": fields.String,
     "is_accepted_terms": fields.Boolean,
-    "is_accepted_pdpa": fields.Boolean
+    "is_accepted_pdpa": fields.Boolean,
+    "is_deleted": fields.Boolean
 }
 
 user_add_args = reqparse.RequestParser()
@@ -33,33 +34,38 @@ user_update_args.add_argument("is_accepted_terms", type=bool,
                               help="[Request Parser]: Args: is_accepted_terms < Must be boolean.")
 user_update_args.add_argument("is_accepted_pdpa", type=bool,
                               help="[Request Parser]: Args: is_accepted_pdpa < Must be boolean.")
+user_update_args.add_argument("is_deleted", type=bool,
+                              help="[Request Parser]: Args: is_deleted < Must be boolean.")
 
 
 class UserRoute(Resource):
     @marshal_with(resource_field)
     def get(self, req_id=None):
-        if req_id == None:
-            users = User.query.all()
-            return users
-        user = User.query.filter_by(id=req_id).first()
-        if not user:
-            abort(
-                404, message="Error: This user with specified user_id not exists in our database.")
-        return user
+        try:
+            if req_id == None:
+                users = User.query.filter_by(is_deleted=False).all()
+                return users
+            user = User.query.filter_by(id=req_id, is_deleted=False).first()
+            if not user:
+                abort(
+                    404, message="Error: This user with specified user_id not exists in our database.")
+            return user
+        finally:
+            db.session.close()
 
     @marshal_with(resource_field)
     def post(self):
         args = user_add_args.parse_args()
         user_id = args["user_id"]
-        user = User.query.filter_by(user_id=user_id).first()
+        user = User.query.filter_by(user_id=user_id, is_deleted=False).first()
         if user:
-            abort(409, message="Error: Current city_id are already exists in database.")
+            abort(409, message="Error: Current user_id are already exists in database.")
         user = User(
             user_id=args["user_id"],
             profile_picture_url=args["profile_picture_url"],
             display_name=args["display_name"],
             is_accepted_terms=args["is_accepted_terms"],
-            is_accepted_pdpa=args["is_accepted_pdpa"]
+            is_accepted_pdpa=args["is_accepted_pdpa"],
         )
         db.session.add(user)
         db.session.commit()
@@ -68,10 +74,10 @@ class UserRoute(Resource):
     @marshal_with(resource_field)
     def patch(self, req_id):
         args = user_update_args.parse_args()
-        user = User.query.filter_by(id=req_id).first()
+        user = User.query.filter_by(id=req_id, is_deleted=False).first()
         if not user:
             abort(
-                404, "Error: This user with specified user_id not exists in our database.")
+                404, message="Error: This user with specified user_id not exists in our database.")
         if args["user_id"]:
             user.user_id = args["user_id"]
         if args["profile_picture_url"]:
@@ -84,3 +90,30 @@ class UserRoute(Resource):
             user.is_accepted_pdpa = args["is_accepted_pdpa"]
         db.session.commit()
         return user, 201
+
+    @marshal_with(resource_field)
+    def delete(self, req_id=None):
+        if req_id == None:
+            abort(
+                409, message="Error: user_id are required in order to delete user.")
+        user = User.query.filter_by(id=req_id, is_deleted=False).first()
+        if not user:
+            abort(
+                404, message="Error: This user with specified user_id not exists in our database.")
+        user.is_deleted = True
+        db.session.commit()
+        return user, 201
+
+
+class LiffRoute(Resource):
+    @marshal_with(resource_field)
+    def get(self, req_user_id):
+        try:
+            user = User.query.filter_by(
+                user_id=req_user_id, is_deleted=False).first()
+            if not user:
+                abort(
+                    404, message="Error: This user with specified user_id not exists in our database.")
+            return user
+        finally:
+            db.session.close()
