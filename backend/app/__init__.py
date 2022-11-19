@@ -34,10 +34,10 @@ def create_app():
     api.add_resource(
         RestaurantRoute, "/apis/restaurant/<int:req_id>", "/apis/restaurant/")
     api.add_resource(
-        RestaurantReviewRoute, "/apis/restaurant/review/<int:req_id>", "/apis/restaurant/review/")
+        RestaurantReviewRoute, "/apis/restaurant/review/<int:req_id>", "/apis/restaurant/review/", "/apis/restaurant/review/<int:req_user_id>/<int:req_restaurant_id>")
     api.add_resource(
         MenuRoute, "/apis/menu/<int:req_id>", "/apis/menu/")
     api.add_resource(
-        MenuReviewRoute, "/apis/menu/review/<int:req_id>", "/apis/menu/review/")
+        MenuReviewRoute, "/apis/menu/review/<int:req_id>", "/apis/menu/review/", "/apis/menu/review/<int:req_user_id>/<int:req_menu_id>")
     create_database(app)
     return app

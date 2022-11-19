@@ -155,8 +155,15 @@ class RestaurantRoute(Resource):
 
 class RestaurantReviewRoute(Resource):
     @marshal_with(restaurant_review_resource_field)
-    def get(self, req_id=None):
+    def get(self, req_id=None, req_user_id=None, req_restaurant_id=None):
         try:
+            if req_user_id != None and req_restaurant_id != None:
+                restaurant_review = RestaurantReview.query.filter_by(
+                    review_by=req_user_id, restaurant_id=req_restaurant_id, is_deleted=False).first()
+                if not restaurant_review:
+                    abort(
+                        404, message="Error: This review with specify user_id and restaurant_id not exists in our database.")
+                return restaurant_review
             if req_id == None:
                 restaurant_reviews = RestaurantReview.query.all()
                 return restaurant_reviews
