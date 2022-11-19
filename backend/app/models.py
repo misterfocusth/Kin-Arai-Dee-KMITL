@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(150), unique=True, nullable=False)
+    user_id = db.Column(db.String(150), nullable=False)
     profile_picture_url = db.Column(db.String(255), default="")
     display_name = db.Column(db.String(150), nullable=False, default="")
     is_accepted_terms = db.Column(db.Boolean, default=False)
@@ -37,12 +37,12 @@ class Restaurant(db.Model):
     location = db.Column(db.String(255), nullable=False)
     phone_number = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
-    catagory_id = db.Column(db.Integer, nullable=False)
+    category_id = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(255), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category}, image_url={self.image_url}, catagory_id={self.catagory_id}, is_deleted={self.is_delete})"
+        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category}, image_url={self.image_url}, category_id={self.category_id}, is_deleted={self.is_delete})"
 
 
 class MenuReview(db.Model):
@@ -63,7 +63,7 @@ class Menu(db.Model):
     name = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(255), nullable=False)
-    catagory_id = db.Column(db.Integer, nullable=False)
+    category_id = db.Column(db.Integer, nullable=False)
     restaurant_name = db.Column(db.String(255), nullable=False)
     restaurant_location = db.Column(db.String(255), nullable=False)
     image_url = db.Column(db.String(255))
@@ -71,7 +71,7 @@ class Menu(db.Model):
     is_deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"Menu(name={self.name}, price={self.price}, category={self.category}, restaurant_name={self.restaurant_name}, restaurant_location={self.restaurant_location}, image_url={self.image_url}, restaurant_id={self.restaurant_id}, catagory_id={self.catagory_id}, is_deleted={self.is_deleted})"
+        return f"Menu(name={self.name}, price={self.price}, category={self.category}, restaurant_name={self.restaurant_name}, restaurant_location={self.restaurant_location}, image_url={self.image_url}, restaurant_id={self.restaurant_id}, category_id={self.category_id}, is_deleted={self.is_deleted})"
 
 
 class RandomResult(db.Model):
@@ -79,9 +79,9 @@ class RandomResult(db.Model):
     random_by = db.Column(db.Integer, nullable=False)
     random_menu_id = db.Column(db.Integer, nullable=False)
     random_restaurant_id = db.Column(db.Integer, nullable=False)
-    random_catagory_id = db.Column(db.Integer, nullable=False)
+    random_category_id = db.Column(db.Integer, nullable=False)
     random_date = db.Column(db.DateTime(timezone=True), default=func.now())
     is_deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_catagory_id={self.random_catagory_id}, random_date={self.random_date}, is_deleted={self.is_deleted})"
+        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_category_id={self.random_category_id}, random_date={self.random_date}, is_deleted={self.is_deleted})"

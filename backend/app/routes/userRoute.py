@@ -43,9 +43,9 @@ class UserRoute(Resource):
     def get(self, req_id=None):
         try:
             if req_id == None:
-                users = User.query.filter_by(is_deleted=False).all()
+                users = User.query.all()
                 return users
-            user = User.query.filter_by(id=req_id, is_deleted=False).first()
+            user = User.query.filter_by(id=req_id).first()
             if not user:
                 abort(
                     404, message="Error: This user with specified user_id not exists in our database.")

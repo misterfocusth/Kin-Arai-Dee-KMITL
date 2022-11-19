@@ -49,7 +49,7 @@ Kin Arai Dee - วันนี้กินอะไรดี (Nearby KMITL) proj
 
 **Server:** Python, Flask, LINE Messaging API, Azure App Service
 
-**Database:** MySQL (Azure Database for MySQL Server), SQLAchemy
+**Database:** AWS Relational Database Service (RDS) for MySQL, SQLAchemy
 
 ## Feedback - เเจ้งปัญหาข้อเสนอเเนะ
 
