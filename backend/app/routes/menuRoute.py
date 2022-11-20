@@ -13,7 +13,6 @@ menu_resource_field = {
     "restaurant_location": fields.String,
     "image_url": fields.String,
     "is_deleted": fields.Boolean,
-
 }
 
 menu_review_resource_field = {

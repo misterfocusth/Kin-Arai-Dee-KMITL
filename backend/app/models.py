@@ -42,7 +42,7 @@ class Restaurant(db.Model):
     is_deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category}, image_url={self.image_url}, category_id={self.category_id}, is_deleted={self.is_delete})"
+        return f"Restaurant(name={self.name}, location={self.location}, phone_number={self.phone_number}, category={self.category}, image_url={self.image_url}, category_id={self.category_id}, is_deleted={self.is_deleted})"
 
 
 class MenuReview(db.Model):
@@ -66,7 +66,7 @@ class Menu(db.Model):
     category_id = db.Column(db.Integer, nullable=False)
     restaurant_name = db.Column(db.String(255), nullable=False)
     restaurant_location = db.Column(db.String(255), nullable=False)
-    image_url = db.Column(db.String(255))
+    image_url = db.Column(db.String(255), nullable=False)
     restaurant_id = db.Column(db.Integer, nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
 
@@ -82,6 +82,9 @@ class RandomResult(db.Model):
     random_category_id = db.Column(db.Integer, nullable=False)
     random_date = db.Column(db.DateTime(timezone=True), default=func.now())
     is_deleted = db.Column(db.Boolean, default=False)
+    random_menu_name = db.Column(db.String(255), nullable=False)
+    random_restaurant_name = db.Column(db.String(255), nullable=False)
+    random_category_name = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
-        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_category_id={self.random_category_id}, random_date={self.random_date}, is_deleted={self.is_deleted})"
+        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_category_id={self.random_category_id}, random_date={self.random_date}, is_deleted={self.is_deleted}, random_menu_name={self.random_menu_name}, random_restaurant_name={self.random_restaurant_name}, random_category_name={self.random_category_name})"

@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/36b8f186-31d4-4b6c-a2d9-b9d2b6932981/AppServices/subscriptions/36b8f186-31d4-4b6c-a2d9-b9d2b6932981/resourceGroups/Kin-Arai-Dee-KMITL/providers/Microsoft.Web/sites/kin-arai-dee-apis-development",
+  "appService.deploySubpath": "backend"
+}
