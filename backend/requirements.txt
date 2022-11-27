@@ -17,3 +17,4 @@ pylint_flask_sqlalchemy
 six
 SQLAlchemy
 Werkzeug
+flask-cors

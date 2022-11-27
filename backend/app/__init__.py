@@ -1,6 +1,7 @@
 """Init Flask & Database Connection"""
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 from .models import db
 from .routes.userRoute import UserRoute, LiffRoute
 from .routes.restaurantRoute import RestaurantRoute, RestaurantReviewRoute
@@ -25,6 +26,7 @@ def create_database(app):
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
