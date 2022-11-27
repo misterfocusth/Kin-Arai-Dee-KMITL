@@ -59,7 +59,6 @@ export default function RestaurantAdder() {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             };
 
-
             const API_ENDPOINT = `${import.meta.env.VITE_BACKEND_API_ENDPOINT
                 }/apis/restaurant/`;
             axios

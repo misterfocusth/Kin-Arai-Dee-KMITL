@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from "react"
 
 // Mantine Components
-import { Input, Button, Textarea, Autocomplete } from "@mantine/core";
+import { Input, Button, Textarea, Loader } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
 
 // Axios
@@ -97,6 +97,14 @@ export default function MenuAdder() {
                 .catch((error) => console.log(error))
         }
     };
+
+    if (!isReady) {
+        return (
+            <div className="flex min-h-screen min-w-screen justify-center items-center">
+                <Loader color="yellow" size="xl" variant="dots" />
+            </div>
+        );
+    }
 
     return (
         <div className="mb-16">

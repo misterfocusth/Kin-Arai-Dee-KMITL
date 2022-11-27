@@ -33,7 +33,7 @@ def create_app():
     api = Api(app)
     api.add_resource(UserRoute, "/apis/user/<int:req_id>", "/apis/user/")
     api.add_resource(
-        LiffRoute, "/apis/user/liff/<int:req_user_id>")
+        LiffRoute, "/apis/user/liff/<string:req_user_id>")
     api.add_resource(
         RestaurantRoute, "/apis/restaurant/<int:req_id>", "/apis/restaurant/")
     api.add_resource(
