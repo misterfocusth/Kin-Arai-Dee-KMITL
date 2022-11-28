@@ -15,9 +15,6 @@ import react, { useState, useEffect, useContext } from "react"
 // React Router Dom
 import { Navigate } from "react-router";
 
-// LINE LIFF
-import liff from "@line/liff"
-
 // Axios
 import axios from 'axios';
 
@@ -27,9 +24,9 @@ import MyLoader from '../components/MyLoader';
 
 export default function NewUserPage() {
     const [userData, setUserData] = useState({
-        userId: "",
-        displayName: "",
-        pictureUrl: ""
+        userId: "U16844612535a2bcc9801c6cfa13a24fa",
+        displayName: "IT KMITL",
+        pictureUrl: "https://9lnre8vrd1yfo5ze.blob.core.windows.net/user-profile-pictures/U16844612535a2bcc9801c6cfa13a24fa/avatar.png"
     })
     const [checkboxs, setCheckboxs] = useState({
         isAcceptTerms: false,
@@ -37,24 +34,23 @@ export default function NewUserPage() {
         isAcceptAll: false
     })
     const [isLoading, setIsLoading] = useState(false)
-    const [isReady, setIsReady] = useState(false)
 
     const authContext = useContext(AuthContext);
 
-    useEffect(() => {
-        async function getLIFFUserData() {
-            const profile = liff.getProfile().then((data) => {
-                setUserData({
-                    userId: data.userId,
-                    displayName: data.displayName,
-                    pictureUrl: data.pictureUrl
-                })
-                setIsReady(true)
-            })
-        }
+    // useEffect(() => {
+    //     async function getLIFFUserData() {
+    //         const profile = liff.getProfile().then((data) => {
+    //             setUserData({
+    //                 userId: data.userId,
+    //                 displayName: data.displayName,
+    //                 pictureUrl: data.pictureUrl
+    //             })
+    //             setIsReady(true)
+    //         })
+    //     }
 
-        getLIFFUserData()
-    }, [])
+    //     getLIFFUserData()
+    // }, [])
 
     const handleChange = (event) => {
         setUserData({ ...userData, [event.currentTarget.id]: event.currentTarget.value })
@@ -98,75 +94,71 @@ export default function NewUserPage() {
         return <Navigate to={"/"} />;
     }
 
-    if (!isReady) {
-        return <MyLoader />
-    } else {
-        return (
-            <div className='p-2 mb-32'>
-                <Container size={420} my={20}>
-                    <Text size="xl" align="center" className="font-bold">
-                        สมัครสมาชิกใหม่
-                    </Text>
-                    <Text color="dimmed" size="sm" align="center" mt={8}>
-                        ดูเหมือนว่าคุณยังไม่เคยเข้าใช้งาน <span className='text-[#FED634] font-bold'>Kin Arai Dee (@KMITL)</span> มาก่อน มาสมัครสมาชิกใหม่เพื่อเข้าใช้งานกันเลย !
-                    </Text>
+    return (
+        <div className='p-2 mb-32'>
+            <Container size={420} my={20}>
+                <Text size="xl" align="center" className="font-bold">
+                    สมัครสมาชิกใหม่
+                </Text>
+                <Text color="dimmed" size="sm" align="center" mt={8}>
+                    ดูเหมือนว่าคุณยังไม่เคยเข้าใช้งาน <span className='text-[#FED634] font-bold'>Kin Arai Dee (@KMITL)</span> มาก่อน มาสมัครสมาชิกใหม่เพื่อเข้าใช้งานกันเลย !
+                </Text>
 
-                    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                        <div className='flex w-full justify-center items-center'>
-                            <Avatar
-                                className=''
-                                src={userData.pictureUrl}
-                                alt="line_profile_picture"
-                                size={"full"}
-                                radius={"lg"}
-                            />
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                    <div className='flex w-full justify-center items-center'>
+                        <Avatar
+                            className=''
+                            src={userData.pictureUrl}
+                            alt="line_profile_picture"
+                            size={"full"}
+                            radius={"lg"}
+                        />
+                    </div>
+                    <TextInput
+                        className='mt-6'
+                        label="ชื่อที่จะแสดงในระบบ"
+                        placeholder="โปรดใส่ชื่อที่จะให้แสดงในระบบ..."
+                        id="displayName"
+                        value={userData.displayName}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Textarea
+                        label="LINE UserID"
+                        placeholder="LINE UserID"
+                        required
+                        mt="md"
+                        disabled
+                        value={userData.userId}
+                        minRows={2}
+                    />
+
+                    <MantineProvider theme={{
+                        colors: {
+                            brand: ['#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634'],
+                        },
+                        primaryColor: 'brand',
+                    }}
+                    >
+                        <div className='flex items-center gap-3 mt-4'>
+                            <Checkbox checked={checkboxs.isAcceptTerms} onChange={(event) => handleCheckboxChange(event)} id="isAcceptTerms" />
+                            <div>อ่านและยอมรับ <span className='text-[#FED634] underline'><a href='https://google.com' target="_blank" rel="noopener noreferrer">เงื่อนไขและข้อตกลงในการใข้งานแอปพลิเคชั่น</a></span></div>
+
                         </div>
-                        <TextInput
-                            className='mt-6'
-                            label="ชื่อที่จะแสดงในระบบ"
-                            placeholder="โปรดใส่ชื่อที่จะให้แสดงในระบบ..."
-                            id="displayName"
-                            value={userData.displayName}
-                            onChange={handleChange}
-                            required
-                        />
-                        <Textarea
-                            label="LINE UserID"
-                            placeholder="LINE UserID"
-                            required
-                            mt="md"
-                            disabled
-                            value={userData.userId}
-                            minRows={2}
-                        />
 
-                        <MantineProvider theme={{
-                            colors: {
-                                brand: ['#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634', '#FED634'],
-                            },
-                            primaryColor: 'brand',
-                        }}
-                        >
-                            <div className='flex items-center gap-3 mt-4'>
-                                <Checkbox checked={checkboxs.isAcceptTerms} onChange={(event) => handleCheckboxChange(event)} id="isAcceptTerms" />
-                                <div>อ่านและยอมรับ <span className='text-[#FED634] underline'><a href='https://google.com' target="_blank" rel="noopener noreferrer">เงื่อนไขและข้อตกลงในการใข้งานแอปพลิเคชั่น</a></span></div>
-
+                        <div className='flex items-center gap-3 mt-4'>
+                            <Checkbox checked={checkboxs.isAcceptPDPA} onChange={(event) => handleCheckboxChange(event)} id="isAcceptPDPA" />
+                            <div>
+                                อ่านและยอมรับ <span className='text-[#FED634] underline'><a href='https://google.com' target="_blank" rel="noopener noreferrer">นโยบายการจัดเก็บรวบรวมใช้ข้อมูลส่วนบุคคล (PDPA)</a></span>
                             </div>
+                        </div>
+                    </MantineProvider>
 
-                            <div className='flex items-center gap-3 mt-4'>
-                                <Checkbox checked={checkboxs.isAcceptPDPA} onChange={(event) => handleCheckboxChange(event)} id="isAcceptPDPA" />
-                                <div>
-                                    อ่านและยอมรับ <span className='text-[#FED634] underline' unter><a href='https://google.com' target="_blank" rel="noopener noreferrer">นโยบายการจัดเก็บรวบรวมใช้ข้อมูลส่วนบุคคล (PDPA)</a></span>
-                                </div>
-                            </div>
-                        </MantineProvider>
-
-                        <Button fullWidth mt="xl" className='bg-[#FED634] active:bg-[#FED634] text-black' onClick={handleRegister} disabled={!(checkboxs.isAcceptPDPA && checkboxs.isAcceptTerms)} loading={isLoading}>
-                            สมัครสมาชิกใหม่
-                        </Button>
-                    </Paper>
-                </Container>
-            </div>
-        )
-    }
+                    <Button fullWidth mt="xl" className='bg-[#FED634] active:bg-[#FED634] text-black' onClick={handleRegister} disabled={!(checkboxs.isAcceptPDPA && checkboxs.isAcceptTerms)} loading={isLoading}>
+                        สมัครสมาชิกใหม่
+                    </Button>
+                </Paper>
+            </Container>
+        </div>
+    )
 }

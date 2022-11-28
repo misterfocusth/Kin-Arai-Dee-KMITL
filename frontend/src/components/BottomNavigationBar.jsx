@@ -34,7 +34,7 @@ const bottomNavTheme = createTheme({
 export default function LabelBottomNavigation() {
     const navigate = useNavigate();
     const [value, setValue] = React.useState("/");
-    const routes = ["/", "/restaurant", "/random", "/info"];
+    const routes = ["/", "/restaurant", "/random"];
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -62,11 +62,6 @@ export default function LabelBottomNavigation() {
                     label="สุ่มเมนู"
                     value={routes[2]}
                     icon={<MenuBookIcon />}
-                />
-                <BottomNavigationAction
-                    label="เกี่ยวกับแอป"
-                    value={routes[3]}
-                    icon={<InfoIcon />}
                 />
             </BottomNavigation>
         </ThemeProvider>

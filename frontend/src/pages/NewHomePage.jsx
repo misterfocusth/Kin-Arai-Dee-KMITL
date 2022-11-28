@@ -6,9 +6,6 @@ import { Navigate, useNavigate } from "react-router";
 // Context Provider
 import { AuthContext } from "../context/Auth";
 
-// LINE LIFF
-import LIFF from "@line/liff";
-
 // Mantine-UI Components
 import {
     TextInput,
@@ -18,9 +15,14 @@ import {
     Textarea,
     Container,
     Button,
+    Modal,
     Avatar,
+    SegmentedControl,
     MantineProvider
 } from '@mantine/core';
+import { Card, Image, Badge, Group } from '@mantine/core';
+import { Autocomplete } from '@mantine/core';
+import { IconSearch } from '@tabler/icons';
 
 // Axios
 import axios from "axios";
@@ -44,9 +46,80 @@ const Header = (props) => {
                 </div>
 
             </div>
-
         </div >
     )
+}
+
+const MenuCard = (props) => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const MenuInfo = (props) => {
+        return (
+            <div>
+                <Modal
+                    opened={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    title="รายละเอียดเมนูอาหาร"
+                    fullScreen
+                >
+                    <div>
+                        <div >
+                            <Image
+                                radius="md"
+                                src={props.data.image_url}
+                                alt="Image_Picture_Url"
+                            />
+                        </div>
+
+                        <div className="p-4">
+                            <p className="mt-4 font-bold text-2xl">
+                                {props.data.name}
+                            </p>
+                            <p className="mt-4">
+                                {props.data.restaurant_name}
+                            </p>
+                            <p className="mt-4">
+                                {props.data.restaurant_location}
+                            </p>
+                        </div>
+                    </div>
+                </Modal>
+            </div>
+        )
+    }
+
+    return (
+        <div
+            onClick={(event) => {
+                console.log(props.uniqueKey)
+                setIsOpen(true)
+            }}
+            id={props.uniqueKey}
+        >
+            <MenuInfo data={props.data} />
+            <Card shadow="sm" p="lg" radius="md" className="h-80" id={props.key} withBorder>
+                <Card.Section>
+                    <Image
+                        src={props.data.image_url}
+                        height={160}
+                        alt="menu_image_url"
+                    />
+                </Card.Section>
+
+                <Group position="apart" mt="md" mb="xs">
+                    <Text weight={500}>{props.data.name}</Text>
+                </Group>
+
+                <Text size="xs" color="dimmed">
+                    {props.data.restaurant_name}
+                </Text>
+                <Text size="xs" color="dimmed">
+                    {props.data.restaurant_location}
+                </Text>
+            </Card>
+        </div>
+
+    );
 }
 
 export default function NewHomePage() {
@@ -54,17 +127,47 @@ export default function NewHomePage() {
     const authContext = useContext(AuthContext);
     const [userData, setUserData] = useState([{}])
     const [isLoading, setIsLoading] = useState(false)
+    const [menus, setMenus] = useState([{}])
+    const [filteredMenus, setFilteredMenus] = useState([{}])
+    const [searchKeyword, setSearchKeyword] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState("all")
 
     useEffect(() => {
         async function getUserData() {
-            const profile = await liff.getProfile();
             axios
                 .get(
-                    `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/user/liff/${profile.userId
-                    }`
+                    `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/user/liff/U16844612535a2bcc9801c6cfa13a24fa`
                 )
                 .then((res) => {
+                    console.log(res.data)
                     setUserData(res.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    setIsLoading(false)
+                })
+        }
+
+        async function getAllMenus() {
+            axios
+                .get(
+                    `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/menu/`
+                )
+                .then((res) => {
+                    console.log(res.data)
+                    setFilteredMenus(res.data)
+
+                    const searchKeywords = []
+                    const response = res.data
+                    response.forEach((menu) => {
+                        console.log(menu.name)
+                        searchKeywords.push(menu.name)
+                    })
+                    setSearchKeyword(searchKeywords)
+
+                    console.log(searchKeyword)
+
+                    setMenus(res.data)
                     setIsLoading(false)
                 })
                 .catch((error) => {
@@ -72,8 +175,23 @@ export default function NewHomePage() {
                     setIsLoading(false)
                 })
         }
+
         getUserData()
+        getAllMenus()
     }, [])
+
+    const handleSearchKeywordChange = (keyword) => {
+        if (!keyword) {
+            setFilteredMenus(menus)
+        } else {
+            var x = menus.filter((element) => {
+                return element.name.toLowerCase().trim().match((keyword).toLowerCase().trim())
+            });
+            setFilteredMenus(x)
+        }
+
+
+    }
 
     if (!authContext.userData) {
         return <Navigate to={"/new-user"} />;
@@ -83,13 +201,59 @@ export default function NewHomePage() {
         return <MyLoader />
     } else {
         return (
-            <div className="p-4">
+            <div className="p-5">
                 <div>
                     <Header data={userData} />
+                    <Autocomplete
+                        className="mt-4"
+                        placeholder="ค้นหาเมนูอาหาร..."
+                        radius="md"
+                        size="md"
+                        icon={<IconSearch />}
+                        onChange={handleSearchKeywordChange}
+                        data={searchKeyword} />
+
+                    <p className="mt-4 font-bold">
+                        เลือกดูตามหมวดหมู่อาหาร
+                    </p>
+                    <SegmentedControl
+                        className="w-full mt-2"
+                        value={selectedCategory}
+                        onChange={(event) => {
+                            setSelectedCategory(event)
+                            if (event !== "all") {
+                                var x = menus.filter((element) => {
+                                    return element.category_id == Number(event)
+                                });
+                                setFilteredMenus(x)
+                            } else {
+                                setFilteredMenus(menus)
+                            }
+
+                        }}
+                        data={[
+                            { label: 'ทั้งหมด', value: "all" },
+                            { label: 'อาหาร', value: "1" },
+                            { label: 'เครื่องดื่ม', value: "2" },
+                            { label: 'ขนม & ของหวาน', value: "3" },
+                        ]}
+                    />
+
+
+                    <div className="flex flex-wrap">
+                        {
+                            filteredMenus.map((menu, id) => (
+                                <div className="w-6/12 mt-4">
+                                    <MenuCard data={menu} uniqueKey={menu.id} />
+                                </div>
+
+                            ))
+                        }
+                    </div>
+
+
                 </div>
             </div>
         )
     }
-
-    return
 }

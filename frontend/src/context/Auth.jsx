@@ -1,5 +1,4 @@
 import * as React from "react";
-import liff from "@line/liff";
 import axios from "axios";
 import MyLoader from "../components/MyLoader";
 
@@ -10,24 +9,22 @@ const AuthContextProvider = (props) => {
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        async function initializeLiff() {
-            liff.ready.then(() => {
-                if (liff.isLoggedIn()) {
-                    getUserData();
-                    setIsLoading(false);
-                } else {
-                    liff.login();
-                }
-            });
-            await liff.init({ liffId: import.meta.env.VITE_PUBLIC_LIFF_ID });
-        }
+        // async function initializeLiff() {
+        //     liff.ready.then(() => {
+        //         if (liff.isLoggedIn()) {
+        //             getUserData();
+        //             setIsLoading(false);
+        //         } else {
+        //             liff.login();
+        //         }
+        //     });
+        //     await liff.init({ liffId: import.meta.env.VITE_PUBLIC_LIFF_ID });
+        // }
 
         async function getUserData() {
-            const profile = await liff.getProfile();
             axios
                 .get(
-                    `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/user/liff/${profile.userId
-                    }`
+                    `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/user/liff/U16844612535a2bcc9801c6cfa13a24fa`
                 )
                 .then((res) => {
                     setUserData(res.data);
@@ -38,7 +35,7 @@ const AuthContextProvider = (props) => {
                 .finally(() => setIsLoading(false));
         }
 
-        initializeLiff();
+        getUserData();
     }, []);
 
     if (isLoading) {

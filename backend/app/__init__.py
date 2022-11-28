@@ -12,12 +12,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-db_host = os.environ['SQL_DATABASE_HOST']
-db_username = os.environ['SQL_DATABASE_USERNAME']
-db_password = os.environ['SQL_DATABASE_PASSWORD']
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s:3306/test" % (
-    db_username, db_password, db_host)
-
 
 def create_database(app):
     with app.app_context():
@@ -27,7 +21,7 @@ def create_database(app):
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db.db'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
     api = Api(app)
