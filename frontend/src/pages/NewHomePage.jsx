@@ -18,10 +18,15 @@ import {
     Modal,
     Avatar,
     SegmentedControl,
-    MantineProvider
+    MantineProvider,
+    Card,
+    Image,
+    Badge,
+    Group,
+    Autocomplete
 } from '@mantine/core';
-import { Card, Image, Badge, Group } from '@mantine/core';
-import { Autocomplete } from '@mantine/core';
+
+// Tabler Icons
 import { IconSearch } from '@tabler/icons';
 
 // Axios
@@ -90,8 +95,7 @@ const MenuCard = (props) => {
 
     return (
         <div
-            onClick={(event) => {
-                console.log(props.uniqueKey)
+            onClick={() => {
                 setIsOpen(true)
             }}
             id={props.uniqueKey}
@@ -123,7 +127,6 @@ const MenuCard = (props) => {
 }
 
 export default function NewHomePage() {
-    let navigate = useNavigate;
     const authContext = useContext(AuthContext);
     const [userData, setUserData] = useState([{}])
     const [isLoading, setIsLoading] = useState(false)
@@ -139,7 +142,6 @@ export default function NewHomePage() {
                     `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/user/liff/U16844612535a2bcc9801c6cfa13a24fa`
                 )
                 .then((res) => {
-                    console.log(res.data)
                     setUserData(res.data)
                 })
                 .catch((error) => {
@@ -154,19 +156,14 @@ export default function NewHomePage() {
                     `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/menu/`
                 )
                 .then((res) => {
-                    console.log(res.data)
                     setFilteredMenus(res.data)
 
                     const searchKeywords = []
                     const response = res.data
                     response.forEach((menu) => {
-                        console.log(menu.name)
                         searchKeywords.push(menu.name)
                     })
                     setSearchKeyword(searchKeywords)
-
-                    console.log(searchKeyword)
-
                     setMenus(res.data)
                     setIsLoading(false)
                 })

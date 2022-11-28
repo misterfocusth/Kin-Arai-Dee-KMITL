@@ -7,6 +7,7 @@ import NewHomePage from "./pages/NewHomePage";
 import NewUserPage from "./pages/NewUserPage";
 import MenuAdder from "./pages/MenuAdder"
 import RestaurantAdder from "./pages/RestaurantAdder"
+import RestaurantPage from "./pages/RestaurantPage";
 
 // MyComponents
 import BottomNavigationBar from "./components/BottomNavigationBar";
@@ -25,9 +26,8 @@ function App() {
             <div>
               <Routes>
                 <Route path="/" element={<NewHomePage />}></Route>
-                <Route path="/restaurant" element={<NewHomePage />}></Route>
+                <Route path="/restaurant" element={<RestaurantPage />}></Route>
                 <Route path="/random" element={<NewHomePage />}></Route>
-                <Route path="/info" element={<NewHomePage />}></Route>
                 <Route path="/new-user" element={<NewUserPage />}></Route>
                 <Route path="/add/restaurant" element={<RestaurantAdder />}></Route>
                 <Route path="/add/menu" element={<MenuAdder />}></Route>
