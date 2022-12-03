@@ -85,6 +85,8 @@ class RandomResult(db.Model):
     random_menu_name = db.Column(db.String(255), nullable=False)
     random_restaurant_name = db.Column(db.String(255), nullable=False)
     random_category_name = db.Column(db.String(255), nullable=False)
+    random_menu_image_url = db.Column(db.String(255), nullable=False)
+    random_menu_price = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_category_id={self.random_category_id}, random_date={self.random_date}, is_deleted={self.is_deleted}, random_menu_name={self.random_menu_name}, random_restaurant_name={self.random_restaurant_name}, random_category_name={self.random_category_name})"
+        return f"RandomResult(random_by={self.random_by}, random_menu_id={self.random_menu_id}, random_restaurant_id={self.random_restaurant_id}, random_category_id={self.random_category_id}, random_date={self.random_date}, is_deleted={self.is_deleted}, random_menu_name={self.random_menu_name}, random_restaurant_name={self.random_restaurant_name}, random_category_name={self.random_category_name}, random_menu_image_url={self.random_menu_image_url} random_menu_price={self.random_menu_price})"

@@ -24,8 +24,6 @@ export default function MenuAdder() {
     const [selectedRestaurantId, setSelectedRestaurantId] = useState("1");
 
     useEffect(() => {
-        console.log(import.meta.env.VITE_BACKEND_API_ENDPOINT)
-        console.log(import.meta.env)
         async function getAllRestaurant() {
             axios
                 .get(`${import.meta.env.VITE_BACKEND_API_ENDPOINT}/apis/restaurant/`)
@@ -194,8 +192,8 @@ export default function MenuAdder() {
                         }}
                     >
                         {
-                            restaurants.map((restaurant, id) => (
-                                <option value={String(restaurant.id)} key={id}>
+                            restaurants.map((restaurant) => (
+                                <option value={String(restaurant.id)} key={restaurant.id}>
                                     {restaurant.name}
                                 </option>
                             ))

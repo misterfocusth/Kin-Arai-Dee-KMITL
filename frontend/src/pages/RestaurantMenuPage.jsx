@@ -95,8 +95,6 @@ const MenuCard = (props) => {
                             เมนู{props.data.category}
                         </p>
                     </div>
-
-
                 </div>
 
             </Card>
@@ -217,7 +215,10 @@ export default function RestaurantMenuPage() {
                     <div className="mt-4">
                         {
                             filteredMenus.map((menu) => (
-                                <MenuCard data={menu} />
+                                <div key={menu.id}>
+                                    <MenuCard data={menu} />
+                                </div>
+
                             ))
                         }
                     </div>

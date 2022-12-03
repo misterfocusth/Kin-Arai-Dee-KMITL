@@ -13,6 +13,7 @@ import RestaurantPage from "./pages/RestaurantPage";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import AuthContextProvider from "./context/Auth";
 import RestaurantMenuPage from "./pages/RestaurantMenuPage";
+import RandomPage from "./pages/RandomPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<NewHomePage />}></Route>
                 <Route path="/restaurant" element={<RestaurantPage />}></Route>
-                <Route path="/random" element={<NewHomePage />}></Route>
+                <Route path="/random" element={<RandomPage />}></Route>
                 <Route path="/new-user" element={<NewUserPage />}></Route>
                 <Route path="/add/restaurant" element={<RestaurantAdder />}></Route>
                 <Route path="/add/menu" element={<MenuAdder />}></Route>

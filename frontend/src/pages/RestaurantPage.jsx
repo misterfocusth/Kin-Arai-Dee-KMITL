@@ -148,8 +148,11 @@ export default function RestaurantPage() {
             </div>
             <div >
                 {
-                    filteredRestaurant.map((restaurant, id) => (
-                        <RestaurantCard data={restaurant} uniqueKey={id} key={id} />
+                    filteredRestaurant.map((restaurant) => (
+                        <div key={restaurant.id}>
+                            <RestaurantCard data={restaurant} />
+                        </div>
+
                     ))
                 }
             </div>

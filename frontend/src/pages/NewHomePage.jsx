@@ -115,10 +115,9 @@ const MenuCard = (props) => {
             onClick={() => {
                 setIsOpen(true)
             }}
-            id={props.uniqueKey}
         >
             <MenuInfo data={props.data} />
-            <Card shadow="sm" p="lg" radius="md" className="h-80" id={props.key} withBorder>
+            <Card shadow="sm" p="lg" radius="md" className="h-80" withBorder>
                 <Card.Section>
                     <Image
                         src={props.data.image_url}
@@ -256,8 +255,8 @@ export default function NewHomePage() {
                     <div className="flex flex-wrap">
                         {
                             filteredMenus.map((menu, id) => (
-                                <div className="w-6/12 mt-4">
-                                    <MenuCard data={menu} uniqueKey={menu.id} />
+                                <div className="w-6/12 mt-4" key={menu.id}>
+                                    <MenuCard data={menu} />
                                 </div>
 
                             ))

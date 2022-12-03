@@ -12,14 +12,16 @@ resource_field = {
     "random_category_name": fields.String,
     "random_category_id": fields.Integer,
     "random_date": fields.DateTime,
+    "random_menu_image_url": fields.String,
+    "random_menu_price": fields.Integer,
     "is_deleted": fields.Boolean
 }
 
 
 random_add_args = reqparse.RequestParser()
-random_add_args.add_argument("random_by", type=int, required=False,
+random_add_args.add_argument("random_by", type=int, required=True,
                              help="[Request Parser]: Args: random_by < Must be integer or not empty.")
-random_add_args.add_argument("random_category_id", type=int,
+random_add_args.add_argument("random_category_id", type=int, required=True,
                              help="[Request Parser]: Args: random_category_id < Must be integer.")
 
 
@@ -51,7 +53,7 @@ class RandomRoute(Resource):
         max_random_times = 10
 
         while max_random_times > 0:
-            if random_category_id:
+            if random_category_id != 0:
                 available_menu = Menu.query.filter_by(
                     category_id=random_category_id, is_deleted=False).all()
             else:
@@ -61,8 +63,7 @@ class RandomRoute(Resource):
                 random_menu_id = 1
             else:
                 random_menu_id = random.randint(0, len(available_menu))
-            random_menu = Menu.query.filter_by(
-                id=random_menu_id, is_deleted=False).first()
+                random_menu = available_menu[random_menu_id]
 
             if random_menu:
                 break
@@ -79,7 +80,9 @@ class RandomRoute(Resource):
             random_category_id=random_menu.category_id,
             random_menu_name=random_menu.name,
             random_restaurant_name=random_menu.restaurant_name,
-            random_category_name=random_menu.category
+            random_category_name=random_menu.category,
+            random_menu_image_url=random_menu.image_url,
+            random_menu_price=random_menu.price
         )
 
         db.session.add(random_result)
