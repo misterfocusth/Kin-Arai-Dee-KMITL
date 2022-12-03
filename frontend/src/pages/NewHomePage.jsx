@@ -48,15 +48,17 @@ const Header = (props) => {
                 <div>
                     <p className="text-lg font-bold text-[#838484]">สวัสดี, {props.data.display_name}</p>
                     <p className="text-xl font-bold mt-1">วันนี้<span className="text-[#FED634]">กินอะไรดี ?</span></p>
+                    <p></p>
                 </div>
-
             </div>
         </div >
     )
 }
 
 const MenuCard = (props) => {
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false)
+    const [test, setTest] = useState(false)
 
     const MenuInfo = (props) => {
         return (
@@ -80,12 +82,27 @@ const MenuCard = (props) => {
                             <p className="mt-4 font-bold text-2xl">
                                 {props.data.name}
                             </p>
-                            <p className="mt-4">
-                                {props.data.restaurant_name}
+                            <p className="mt-4 font-bold text-xl">
+                                ราคา : <span className="text-[#FED634]">{props.data.price}</span> บาท
                             </p>
                             <p className="mt-4">
-                                {props.data.restaurant_location}
+                                ร้าน : {props.data.restaurant_name}
                             </p>
+                            <p className="mt-4">
+                                สถานที่ : {props.data.restaurant_location}
+                            </p>
+                        </div>
+
+                        <div className="mt-4">
+                            <Card shadow="sm" p="lg" radius="md" id={props.key} withBorder>
+
+                                <p className="text-lg">
+                                    ต้องการดูเมนูของร้านนี้เพิ่มเติม ?
+                                </p>
+                                <p className="font-bold mt-2" onClick={() => navigate(`restaurant/menu?restaurantId=${props.data.restaurant_id}`)}>
+                                    ดูเมนูอาหารทั้งหมดของร้าน <span className="text-[#FED634] underline">{props.data.restaurant_name}</span>
+                                </p>
+                            </Card>
                         </div>
                     </div>
                 </Modal>
@@ -148,6 +165,7 @@ export default function NewHomePage() {
                     console.log(error)
                     setIsLoading(false)
                 })
+
         }
 
         async function getAllMenus() {
@@ -186,8 +204,6 @@ export default function NewHomePage() {
             });
             setFilteredMenus(x)
         }
-
-
     }
 
     if (!authContext.userData) {

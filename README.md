@@ -45,12 +45,14 @@ Kin Arai Dee - วันนี้กินอะไรดี (Nearby KMITL) proj
 
 ## Tech Stack - เทคโนโลยีที่ใช้ในโปรเจ็ค
 
-**Client:** HTML & CSS, JavaScript, NextJS, TailwindCSS, LINE LIFF (Front-end framework)
+**Client:** HTML & CSS, JavaScript, ReactJS, TailwindCSS
 
-**Server:** Python, Flask, LINE Messaging API, Azure App Service
+**Server (Back-end):** Python, Flask
 
-**Database:** AWS Relational Database Service (RDS) for MySQL, SQLAchemy
+**Database:** SQLite, SQLAchemy ORM
 
 ## Feedback - เเจ้งปัญหาข้อเสนอเเนะ
 
 เเจ้งปัญหาการใช้งานหรือข้อเสนอเเนะเพิ่มเติม ได้ที่ : 65070219@KMITL.AC.TH
+
+ngrok start --config=ngrok.yaml --all

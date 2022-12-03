@@ -33,31 +33,38 @@ import { IconSearch, IconMapPin } from '@tabler/icons';
 import axios from "axios";
 
 const RestaurantCard = (props) => {
-    return (
-        <div id={props.uniqueKey} className="mt-4">
-            <Card shadow="sm" p="lg" radius="md" id={props.key} withBorder>
-                <Card.Section>
-                    <Image
-                        src={props.data.image_url}
-                        height={160}
-                        alt="menu_image_url"
-                    />
-                </Card.Section>
+    const navigate = useNavigate()
 
-                <Group position="apart" mt="md" mb="xs">
-                    <Text weight={500} size="lg">{props.data.name}</Text>
-                </Group>
-                <Text size="md" color="dimmed">
-                    หมวดหมู่ร้านอาหาร: {props.data.category}
-                </Text>
-                <Text size="md" color="dimmed">
-                    {props.data.location}
-                </Text>
-                <Text size="md" color="dimmed">
-                    เบอร์โทรติดต่อร้าน : {props.data.phone_number}
-                </Text>
-            </Card>
+    return (
+        <div
+            onClick={() => navigate(`menu?restaurantId=${props.data.id}`)}
+        >
+            <div id={props.uniqueKey} className="mt-4">
+                <Card shadow="sm" p="lg" radius="md" id={props.key} withBorder>
+                    <Card.Section>
+                        <Image
+                            src={props.data.image_url}
+                            height={160}
+                            alt="menu_image_url"
+                        />
+                    </Card.Section>
+
+                    <Group position="apart" mt="md" mb="xs">
+                        <Text weight={500} size="lg">{props.data.name}</Text>
+                    </Group>
+                    <Text size="md" color="dimmed">
+                        หมวดหมู่ร้านอาหาร: {props.data.category}
+                    </Text>
+                    <Text size="md" color="dimmed">
+                        {props.data.location}
+                    </Text>
+                    <Text size="md" color="dimmed">
+                        เบอร์โทรติดต่อร้าน : {props.data.phone_number}
+                    </Text>
+                </Card>
+            </div>
         </div>
+
     )
 }
 
@@ -70,7 +77,6 @@ export default function RestaurantPage() {
     const [searchKeyword, setSearchKeyword] = useState([])
 
     useEffect(() => {
-
         async function getAllRestaurants() {
             axios
                 .get(
@@ -119,7 +125,7 @@ export default function RestaurantPage() {
     return (
         <div className="p-5 mb-16">
             <div className="text-center font-bold">
-                <p>
+                <p className="text-[#FED634]">
                     ค้นหาร้านอาหาร
                 </p>
                 <div className="flex items-center gap-2 mt-2 justify-center">
@@ -142,8 +148,8 @@ export default function RestaurantPage() {
             </div>
             <div >
                 {
-                    filteredRestaurant.map((restaurant) => (
-                        <RestaurantCard data={restaurant} uniqueKey={restaurant.id} />
+                    filteredRestaurant.map((restaurant, id) => (
+                        <RestaurantCard data={restaurant} uniqueKey={id} key={id} />
                     ))
                 }
             </div>

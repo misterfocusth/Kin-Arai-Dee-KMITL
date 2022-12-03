@@ -12,6 +12,7 @@ import RestaurantPage from "./pages/RestaurantPage";
 // MyComponents
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import AuthContextProvider from "./context/Auth";
+import RestaurantMenuPage from "./pages/RestaurantMenuPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/new-user" element={<NewUserPage />}></Route>
                 <Route path="/add/restaurant" element={<RestaurantAdder />}></Route>
                 <Route path="/add/menu" element={<MenuAdder />}></Route>
+                <Route exact path="/restaurant/menu" element={<RestaurantMenuPage />}></Route>
               </Routes>
             </div>
 
