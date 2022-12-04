@@ -1,4 +1,4 @@
-import react, { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // React Router Dom
 import { Navigate, useNavigate } from "react-router";
@@ -8,22 +8,7 @@ import { AuthContext } from "../context/Auth";
 
 // Mantine-UI Components
 import {
-    TextInput,
-    Checkbox,
-    Paper,
-    Text,
-    Textarea,
-    Container,
-    Button,
-    Modal,
-    Avatar,
-    SegmentedControl,
-    MantineProvider,
-    Card,
-    Image,
-    Badge,
-    Group,
-    Autocomplete
+    Autocomplete, Avatar, Card, Group, Image, Modal, SegmentedControl, Text
 } from '@mantine/core';
 
 // Tabler Icons
@@ -213,7 +198,7 @@ export default function NewHomePage() {
         return <MyLoader />
     } else {
         return (
-            <div className="p-5">
+            <div className="p-5 mb-16">
                 <div>
                     <Header data={userData} />
                     <Autocomplete

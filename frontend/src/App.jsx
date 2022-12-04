@@ -1,24 +1,21 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 // Pages
+import MenuAdder from "./pages/MenuAdder";
 import NewHomePage from "./pages/NewHomePage";
 import NewUserPage from "./pages/NewUserPage";
-import MenuAdder from "./pages/MenuAdder"
-import RestaurantAdder from "./pages/RestaurantAdder"
+import RestaurantAdder from "./pages/RestaurantAdder";
 import RestaurantPage from "./pages/RestaurantPage";
 
 // MyComponents
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import AuthContextProvider from "./context/Auth";
-import RestaurantMenuPage from "./pages/RestaurantMenuPage";
 import RandomPage from "./pages/RandomPage";
+import RestaurantMenuPage from "./pages/RestaurantMenuPage";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
-  const [liffData, setLiffData] = useState(null);
 
   return (
     <AuthContextProvider>

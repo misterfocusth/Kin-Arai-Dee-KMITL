@@ -1,16 +1,10 @@
 import {
-    TextInput,
-    Checkbox,
-    Paper,
+    Avatar, Button, Checkbox, Container, MantineProvider, Paper,
     Text,
-    Textarea,
-    Container,
-    Button,
-    Avatar,
-    MantineProvider
+    Textarea, TextInput
 } from '@mantine/core';
 
-import react, { useState, useEffect, useContext } from "react"
+import { useContext, useState } from "react";
 
 // React Router Dom
 import { Navigate } from "react-router";
@@ -20,7 +14,6 @@ import axios from 'axios';
 
 // Context Provider
 import { AuthContext } from "../context/Auth";
-import MyLoader from '../components/MyLoader';
 
 export default function NewUserPage() {
     const [userData, setUserData] = useState({
@@ -34,23 +27,7 @@ export default function NewUserPage() {
         isAcceptAll: false
     })
     const [isLoading, setIsLoading] = useState(false)
-
     const authContext = useContext(AuthContext);
-
-    // useEffect(() => {
-    //     async function getLIFFUserData() {
-    //         const profile = liff.getProfile().then((data) => {
-    //             setUserData({
-    //                 userId: data.userId,
-    //                 displayName: data.displayName,
-    //                 pictureUrl: data.pictureUrl
-    //             })
-    //             setIsReady(true)
-    //         })
-    //     }
-
-    //     getLIFFUserData()
-    // }, [])
 
     const handleChange = (event) => {
         setUserData({ ...userData, [event.currentTarget.id]: event.currentTarget.value })

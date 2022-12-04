@@ -1,3 +1,5 @@
+"""Main File for start python application and web server"""
+
 from app import create_app
 
 app = create_app()

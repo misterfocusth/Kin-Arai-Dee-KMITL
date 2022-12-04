@@ -14,11 +14,13 @@ load_dotenv()
 
 
 def create_database(app):
+    """Create database files using model schema"""
     with app.app_context():
         db.create_all()
 
 
 def create_app():
+    """Create application and api services"""
     app = Flask(__name__)
     CORS(app)
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db.db'

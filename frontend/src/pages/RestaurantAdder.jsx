@@ -20,21 +20,6 @@ export default function RestaurantAdder() {
     })
     const [restaurants, setRestaurants] = useState([{}])
 
-    // useEffect(() => {
-    //     async function getAllRestaurants() {
-    //         const API_ENDPOINT = `${import.meta.env.VITE_BACKEND_API_ENDPOINT
-    //             }/apis/restaurant/`;
-    //         axios.get(API_ENDPOINT).then((response) => {
-    //             console.log(response.data)
-    //             setRestaurants(response.data)
-    //             setIsReady(true)
-    //         })
-    //             .catch((error) => console.log(error))
-    //     }
-
-    //     getAllRestaurants()
-    // }, [])
-
     const handleChange = (event) => {
         setRestaurantData({
             ...restaurantData,

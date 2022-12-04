@@ -1,3 +1,5 @@
+"""Database Model for create database table"""
+
 from sqlalchemy import func
 from sqlalchemy.sql import expression
 from flask_sqlalchemy import SQLAlchemy
@@ -6,6 +8,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+    """User Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(150), nullable=False)
     profile_picture_url = db.Column(db.String(255), default="")
@@ -19,6 +22,7 @@ class User(db.Model):
 
 
 class RestaurantReview(db.Model):
+    """Restaurant Review Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.Integer, nullable=False)
     review_by = db.Column(db.Integer, nullable=False)
@@ -32,6 +36,7 @@ class RestaurantReview(db.Model):
 
 
 class Restaurant(db.Model):
+    """Restaurant Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
@@ -46,6 +51,7 @@ class Restaurant(db.Model):
 
 
 class MenuReview(db.Model):
+    """Menu Review Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     menu_id = db.Column(db.Integer, nullable=False)
     review_by = db.Column(db.Integer, nullable=False)
@@ -59,6 +65,7 @@ class MenuReview(db.Model):
 
 
 class Menu(db.Model):
+    """Menu Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Integer, nullable=False)
@@ -75,6 +82,7 @@ class Menu(db.Model):
 
 
 class RandomResult(db.Model):
+    """Random Result Table Schema"""
     id = db.Column(db.Integer, primary_key=True)
     random_by = db.Column(db.Integer, nullable=False)
     random_menu_id = db.Column(db.Integer, nullable=False)

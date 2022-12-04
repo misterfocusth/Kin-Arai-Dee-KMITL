@@ -1,5 +1,5 @@
-import * as React from "react";
 import axios from "axios";
+import * as React from "react";
 import MyLoader from "../components/MyLoader";
 
 export const AuthContext = React.createContext(null);
@@ -9,18 +9,6 @@ const AuthContextProvider = (props) => {
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        // async function initializeLiff() {
-        //     liff.ready.then(() => {
-        //         if (liff.isLoggedIn()) {
-        //             getUserData();
-        //             setIsLoading(false);
-        //         } else {
-        //             liff.login();
-        //         }
-        //     });
-        //     await liff.init({ liffId: import.meta.env.VITE_PUBLIC_LIFF_ID });
-        // }
-
         async function getUserData() {
             axios
                 .get(

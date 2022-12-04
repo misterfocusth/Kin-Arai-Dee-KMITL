@@ -1,4 +1,4 @@
-import react, { useState, useEffect, useContext } from "react"
+import { useContext, useEffect, useState } from "react";
 
 // React Router Dom
 import { Navigate, useNavigate } from "react-router";
@@ -8,26 +8,11 @@ import { AuthContext } from "../context/Auth";
 
 // Mantine-UI Components
 import {
-    TextInput,
-    Checkbox,
-    Paper,
-    Text,
-    Textarea,
-    Container,
-    Button,
-    Modal,
-    Avatar,
-    SegmentedControl,
-    MantineProvider,
-    Card,
-    Image,
-    Badge,
-    Group,
-    Autocomplete
+    Autocomplete, Card, Group, Image, Text
 } from '@mantine/core';
 
 // Tabler Icons
-import { IconSearch, IconMapPin } from '@tabler/icons';
+import { IconMapPin, IconSearch } from '@tabler/icons';
 
 // Axios
 import axios from "axios";

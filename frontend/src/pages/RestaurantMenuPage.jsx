@@ -1,36 +1,22 @@
-import react, { useState, useEffect } from "react"
+import { useEffect, useState } from "react";
 
 // React Router
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom";
 
 // Axios
 import axios from "axios";
 
 // Mantine-UI Components
 import {
-    TextInput,
-    Checkbox,
-    Paper,
-    Text,
-    Textarea,
-    Container,
-    Button,
-    Modal,
-    Avatar,
-    SegmentedControl,
-    MantineProvider,
-    Card,
-    Image,
-    Badge,
-    Group,
-    Autocomplete
+    Autocomplete, Card,
+    Image, Modal
 } from '@mantine/core';
 
 // Tabler Icons
-import { IconSearch, IconMapPin } from '@tabler/icons';
+import { IconSearch } from '@tabler/icons';
 
 // My Components
-import MyLoader from "../components/MyLoader"
+import MyLoader from "../components/MyLoader";
 
 const MenuCard = (props) => {
     const [isOpen, setIsOpen] = useState(false)

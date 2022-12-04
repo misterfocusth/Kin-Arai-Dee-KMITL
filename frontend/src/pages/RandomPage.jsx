@@ -1,35 +1,18 @@
-import react, { useState, useEffect } from "react"
+import { useEffect, useState } from "react";
 
 // React Router Dom
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 // Context Provider
-import { AuthContext } from "../context/Auth";
 
 // Mantine-UI Components
 import {
-    TextInput,
-    Checkbox,
-    Paper,
-    Text,
-    Textarea,
-    Container,
-    Button,
-    Modal,
-    Avatar,
-    SegmentedControl,
-    MantineProvider,
-    Card,
-    Image,
-    Badge,
-    Group,
-    Autocomplete,
-    NativeSelect,
-    Alert
+    Alert, Button, Card,
+    Image, Modal, NativeSelect
 } from '@mantine/core';
 
 // Icons
-import { IconSearch, IconAlertCircle, IconArrowsShuffle2 } from '@tabler/icons';
+import { IconAlertCircle, IconArrowsShuffle2 } from '@tabler/icons';
 
 // Axios
 import axios from "axios";
@@ -129,6 +112,7 @@ const RandomInfoCard = (props) => {
 }
 
 export default function RandomPage() {
+    const navigate = useNavigate()
     const [selectedCategory, setSelectedCategory] = useState("หมวดหมู่ทั้งหมด")
     const [randomHistories, setRandomHistories] = useState([{}])
     const [menus, setMenus] = useState([{}])
